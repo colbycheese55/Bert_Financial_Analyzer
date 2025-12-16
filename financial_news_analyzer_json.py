@@ -239,37 +239,15 @@ class FinancialNewsAnalyzer:
         print("\nPrice Change Statistics:")
         print(self.final_df['price_change'].describe())
 
-        # Top gainers
-        print("\nTop 10 Biggest Price Increases:")
-        top_gainers = self.final_df.nlargest(10, 'price_change')[
-            ['date', 'stock_ticker', 'headline', 'price_change']
-        ]
-        print(top_gainers.to_string())
-
-        # Top losers
-        print("\nTop 10 Biggest Price Decreases:")
-        top_losers = self.final_df.nsmallest(10, 'price_change')[
-            ['date', 'stock_ticker', 'headline', 'price_change']
-        ]
-        print(top_losers.to_string())
-
         print("\n" + "=" * 70)
         print("SAMPLE DATA")
         print("=" * 70)
         print(self.final_df.head(10).to_string())
 
     def run(self, max_rows=None):
-        """
-        Run the complete pipeline.
-
-        Args:
-            max_rows (int): Maximum rows to process (for testing)
-        """
         print("=" * 70)
-        print("FINANCIAL NEWS STOCK PRICE ANALYSIS (JSON INPUT)")
+        print("FINANCIAL NEWS STOCK PRICE ANALYSIS")
         print("=" * 70)
-
-        # Execute pipeline
         self.load_data()
         self.parse_data()
         self.enrich_with_prices(max_rows=max_rows)
