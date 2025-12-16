@@ -24,8 +24,10 @@ def main() -> None:
         subset = df[df["predicted_label"] == label]["price_change_pct"]
         ax.boxplot(subset)
         ax.set_title(label)
-        ax.set_ylabel("price_change_pct")
+        ax.set_ylabel("price change (%)")
 
+    fig.suptitle("Boxplot of price change percentage for each sentiment")
+    plt.ylim(ymin=-25, ymax=25)
     plt.tight_layout()
     plt.show() 
 
@@ -36,8 +38,10 @@ def main() -> None:
         ax.scatter(subset[prob_col], subset["price_change_pct"], alpha=0.6)
         ax.set_title(label)
         ax.set_xlabel(f"{label} probability")
-        ax.set_ylabel("price_change_pct")
+        ax.set_ylabel("price change (%)")
 
+    fig.suptitle("Scatter plot of price change percentage for each sentiment")
+    plt.ylim(ymin=-25, ymax=25)
     plt.tight_layout()
     plt.show()
 

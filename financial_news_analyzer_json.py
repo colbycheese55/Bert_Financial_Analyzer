@@ -64,14 +64,6 @@ class FinancialNewsAnalyzer:
             # Extract tickers (array format in JSON)
             tickers = article.get('tickers', [])
 
-            # Extract sentiment
-            sentiment_by_ticker = dict()
-            insights = article.get('insights', [])
-            for insight in insights:
-                if 'sentiment' in insight:
-                    ticker = insight.get('ticker', '').upper()
-                    sentiment = insight['sentiment']
-                    sentiment_by_ticker[ticker] = sentiment
 
             if not headline or not date_str or not tickers:
                 continue
@@ -90,7 +82,6 @@ class FinancialNewsAnalyzer:
                         'headline': headline,
                         'date': date_only,
                         'stock_ticker': ticker.upper(),
-                        'sentiment': sentiment_by_ticker.get(ticker.upper(), None)
                     })
 
         self.parsed_df = pd.DataFrame(parsed_rows)
@@ -215,7 +206,7 @@ class FinancialNewsAnalyzer:
         print(f"\nSaving results to {self.output_file}...")
 
         # Select required columns in the specified order
-        output_columns = ['headline', 'date', 'stock_ticker', 'price_change', 'sentiment']
+        output_columns = ['headline', 'date', 'stock_ticker', 'price_change']
 
         # Add optional columns if they exist
         optional_columns = ['open_price', 'close_price', 'price_change_pct']
@@ -261,7 +252,7 @@ class FinancialNewsAnalyzer:
 def main():
     INPUT_FILE = "polygon_news_sample.json"
     OUTPUT_FILE = "financial_news_with_prices.csv"
-    MAX_ROWS = 100  # Set to 100 for testing, None for all rows
+    MAX_ROWS = None  # Set to 100 for testing, None for all rows
     analyzer = FinancialNewsAnalyzer(INPUT_FILE, OUTPUT_FILE)
     analyzer.run(max_rows=MAX_ROWS)
 
