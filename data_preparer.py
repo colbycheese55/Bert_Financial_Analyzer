@@ -39,11 +39,6 @@ class FinancialNewsAnalyzer:
 
         print(f"Loaded {len(self.raw_data)} articles from JSON")
 
-        # Display structure of first article for reference
-        if len(self.raw_data) > 0:
-            print("\nSample article structure:")
-            print(f"Keys: {list(self.raw_data[0].keys())}")
-
         return self.raw_data
 
     def parse_data(self):
@@ -150,7 +145,6 @@ class FinancialNewsAnalyzer:
         else:
             df = self.parsed_df.copy()
 
-        # Initialize result columns
         opens = []
         closes = []
         changes = []
@@ -189,10 +183,8 @@ class FinancialNewsAnalyzer:
         df['price_change'] = changes
         df['price_change_pct'] = pct_changes
 
-        # Save cache one final time
         self.save_cache()
 
-        # Calculate statistics
         with_data = df['price_change'].notna().sum()
         print(f"\nCompleted enrichment!")
         print(f"Total rows: {total}")
@@ -205,10 +197,7 @@ class FinancialNewsAnalyzer:
     def save_results(self):
         print(f"\nSaving results to {self.output_file}...")
 
-        # Select required columns in the specified order
         output_columns = ['headline', 'date', 'stock_ticker', 'price_change']
-
-        # Add optional columns if they exist
         optional_columns = ['open_price', 'close_price', 'price_change_pct']
         for col in optional_columns:
             if col in self.final_df.columns:
@@ -221,20 +210,6 @@ class FinancialNewsAnalyzer:
 
         return output_df
 
-    def display_summary(self):
-        print("\n" + "=" * 70)
-        print("SUMMARY STATISTICS")
-        print("=" * 70)
-
-        # Price change statistics
-        print("\nPrice Change Statistics:")
-        print(self.final_df['price_change'].describe())
-
-        print("\n" + "=" * 70)
-        print("SAMPLE DATA")
-        print("=" * 70)
-        print(self.final_df.head(10).to_string())
-
     def run(self, max_rows=None):
         print("=" * 70)
         print("FINANCIAL NEWS STOCK PRICE ANALYSIS")
@@ -243,7 +218,6 @@ class FinancialNewsAnalyzer:
         self.parse_data()
         self.enrich_with_prices(max_rows=max_rows)
         self.save_results()
-        self.display_summary()
 
         print("\n" + "=" * 70)
         print("ANALYSIS COMPLETE!")
@@ -252,7 +226,7 @@ class FinancialNewsAnalyzer:
 def main():
     INPUT_FILE = "polygon_news_sample.json"
     OUTPUT_FILE = "financial_news_with_prices.csv"
-    MAX_ROWS = None  # Set to 100 for testing, None for all rows
+    MAX_ROWS = 100  # set to 100 for code demo, None for all rows. 
     analyzer = FinancialNewsAnalyzer(INPUT_FILE, OUTPUT_FILE)
     analyzer.run(max_rows=MAX_ROWS)
 
