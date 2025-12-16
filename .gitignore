@@ -1,2 +1,4 @@
 bert_model/
 financial_news_with_prices.csv
+bert_predictions.csv
+__pycache__/
